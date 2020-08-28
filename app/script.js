@@ -1,29 +1,46 @@
+let colors = [];
+let pickedColor = '';
+let h1 = document.querySelector("h1");
+let resetButton = document.querySelector("#resetButton");
 let squares = document.querySelectorAll(".square");
 let colorDisplay = document.getElementById("colorDisplay");
 let messageDisplay = document.getElementById("messageDisplay");
 
-let colors = generateRandomColors(6);
-let pickedColor = pickColor();
 
-colorDisplay.textContent = pickedColor;
-for(let i = 0; i < squares.length; i++) {
-    //Add initial colors to squares
-    squares[i].style.backgroundColor = colors[i];
-    
-    //Add click listeners to squares
-    squares[i].addEventListener("click", function(){
-        let clickedColor = this.style.backgroundColor;
-        if(clickedColor === pickedColor){
-            messageDisplay.textContent = "Correct";
-            changeColors(clickedColor);
-        } else {
-            this.style.backgroundColor = "#232323";
-            messageDisplay.textContent = "Try again";
-        }
-    });
+initilizeGame()
+resetButton.addEventListener("click", initilizeGame);
+
+function initilizeGame(){
+    colors = generateRandomColors(6);
+    pickedColor = pickColor();
+    colorDisplay.textContent = pickedColor;
+    h1.style.backgroundColor = "#232323";
+    squareColoring();
 }
 
+function squareColoring() {
+    for(let i = 0; i < squares.length; i++) {
+        //Add initial colors to squares
+        squares[i].style.backgroundColor = colors[i];
+        
+        //Add click listeners to squares
+        squares[i].addEventListener("click", function(){
+            let clickedColor = this.style.backgroundColor;
+            if(clickedColor === pickedColor){
+                messageDisplay.textContent = "Correct!";
+                resetButton.textContent = "Play Again?"
+                changeColors(clickedColor);
+            } else {
+                this.style.backgroundColor = "#232323";
+                messageDisplay.textContent = "Try again";
+            }
+        });
+    }
+}
+
+
 function changeColors(clickedColor) {
+    h1.style.backgroundColor = clickedColor;
     for(let i = 0; i < squares.length; i++){
         squares[i].style.backgroundColor = clickedColor;
     }
