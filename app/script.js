@@ -1,54 +1,46 @@
 let colors = [];
-let numberOfSquares = 6;
 let pickedColor = '';
+let numberOfSquares = 6;
 let h1 = document.querySelector("h1");
-let resetButton = document.querySelector("#resetButton");
 let squares = document.querySelectorAll(".square");
+let resetButton = document.querySelector("#resetButton");
 let colorDisplay = document.getElementById("colorDisplay");
+let modeButtons = document.querySelectorAll(".modeButton");
 let messageDisplay = document.getElementById("messageDisplay");
-let easyButton = document.getElementById("easyButton");
-let hardButton = document.getElementById("hardButton");
 
+init();
 
-initilizeGame(numberOfSquares);
-
-easyButton.addEventListener("click", setEasyMode);
-hardButton.addEventListener("click", setHardMode);
-resetButton.addEventListener("click", function(){initilizeGame(numberOfSquares);});
-
-function setEasyMode(){
-    numberOfSquares = 3;
-    easyButton.classList.add("selected");
-    hardButton.classList.remove("selected");
-    initilizeGame(numberOfSquares);
+function init() {
+    setupModeButtons();
+    setupSquares();
+    reset();
 }
 
-function setHardMode(){
-    numberOfSquares = 6;
-    hardButton.classList.add("selected");
-    easyButton.classList.remove("selected");
-    initilizeGame(numberOfSquares);
-}
-
-function initilizeGame(numberOfSquares){
+function reset(){
+    messageDisplay.textContent = '';
+    h1.style.backgroundColor = "steelblue";
+    resetButton.textContent = "NEW COLORS";
     colors = generateRandomColors(numberOfSquares);
     pickedColor = pickColor();
     colorDisplay.textContent = pickedColor;
-    h1.style.backgroundColor = "steelblue";
     squareColoring();
 }
 
-function squareColoring() {
+function setupModeButtons() {
+    for(let i = 0; i < modeButtons.length; i++) {
+        modeButtons[i].addEventListener("click", function(){
+            modeButtons[0].classList.remove("selected");
+            modeButtons[1].classList.remove("selected");
+            this.classList.add("selected");
+            this.textContent === "EASY"? numberOfSquares = 3: numberOfSquares = 6;
+            reset()
+        })
+    }
+    resetButton.addEventListener("click", function(){reset();});
+}
+
+function setupSquares() {
     for(let i = 0; i < squares.length; i++) {
-        //Add colors to squares
-        if(colors[i]) {
-            squares[i].style.backgroundColor = colors[i];
-            squares[i].style.display = "block";
-        }else {
-            squares[i].style.display = "none";
-        }
-        
-        //Add click listeners to squares
         squares[i].addEventListener("click", function(){
             let clickedColor = this.style.backgroundColor;
             if(clickedColor === pickedColor){
@@ -63,6 +55,16 @@ function squareColoring() {
     }
 }
 
+function squareColoring() {
+    for(let i = 0; i < squares.length; i++) {
+        if(colors[i]) {
+            squares[i].style.display = "block";
+            squares[i].style.backgroundColor = colors[i];
+        }else {
+            squares[i].style.display = "none";
+        }
+    }
+}
 
 function changeColors(clickedColor) {
     h1.style.backgroundColor = clickedColor;
