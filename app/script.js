@@ -34,7 +34,7 @@ function initilizeGame(numberOfSquares){
     colors = generateRandomColors(numberOfSquares);
     pickedColor = pickColor();
     colorDisplay.textContent = pickedColor;
-    h1.style.backgroundColor = "#232323";
+    h1.style.backgroundColor = "steelblue";
     squareColoring();
 }
 
